@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MasaSam.Controls;
 
 namespace GenerateurMusique
 {
@@ -218,6 +219,12 @@ namespace GenerateurMusique
         private void BtnSong13_Click(object sender, RoutedEventArgs e)
         {
             CreateAndPlayMusic(12);
+        }
+
+
+        private void rtFive_RatingChanged(object sender, RatingChangedEventArgs e)
+        {
+            Rating r = (Rating)sender;
         }
     }
 }
