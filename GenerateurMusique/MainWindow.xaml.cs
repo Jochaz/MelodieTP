@@ -15,11 +15,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MasaSam.Controls;
 
+
 namespace GenerateurMusique
 {
     public partial class MainWindow : Window
     {
-
+        static Random rand = new Random();
         MediaPlayer mplayer;
         Boolean isPlaying;
         string strFileName;
@@ -35,18 +36,11 @@ namespace GenerateurMusique
             mplayer.MediaEnded += mplayer_MediaEnded;
             isPlaying = false;
 
-
             population = new Population();
 
-            displayPopulation();
             // On s'abonne à la fermeture du programme pour pouvoir nettoyer le répertoire et les fichiers midi
             this.Closed += MainWindow_Closed;
         }
-
-        public void displayPopulation()
-        {
-        }
-
         // On efface les fichiers .mid que l'on avait créé à la fin du programme
         void MainWindow_Closed(object sender, EventArgs e)
         {
@@ -73,25 +67,19 @@ namespace GenerateurMusique
             isPlaying = false;
         }
 
-        // Clic sur le bouton : on lance la création d'un fichier et on le joue
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        // Clic sur le bouton : on reset la population
+        private void BtnRestart(object sender, System.Windows.RoutedEventArgs e)
         {
-
             mplayer.Stop();
             mplayer.Close();
             isPlaying = false;
 
             population = new Population();
-
-
-
         }
 
         // Méthode principale
         void CreateAndPlayMusic(int songNumber) 
         {
-
-
             // s'il y a un fichier en cours de lecture on l'arrête 
             if (isPlaying)
             {
@@ -100,7 +88,7 @@ namespace GenerateurMusique
                 isPlaying = false;
             }
             // Générateur aléatoire
-            Random rand = new Random();
+
             Individu individu = population.Individus[songNumber];
             // 1) Créer le fichier MIDI
             // a. Créer un fichier et une piste audio ainsi que les informations de tempo
@@ -124,9 +112,9 @@ namespace GenerateurMusique
             //    song.AddNote(0, 0, note, 24);
             //}
 
-            foreach(Note note in individu.Notes)
+            foreach(Note note in individu.Genes)
             {
-                song.AddNote(0, 0, note.Id, note.Duration);
+                song.AddNote(0, 0, note.Valeur, note.Duration);
             }
 
             // d. Enregistrer le fichier .mid (lisible dans un lecteur externe par exemple)
@@ -163,9 +151,84 @@ namespace GenerateurMusique
             CreateAndPlayMusic(songNumber);
         }
 
-        private void rtFive_RatingChanged(object sender, RatingChangedEventArgs e)
+        private void BtnNextGen(object sender, RoutedEventArgs e)
         {
-            var r = (Rating)sender;
+            mplayer.Stop();
+            mplayer.Close();
+            isPlaying = false;
+            if (allIsRated())
+            {
+                Console.WriteLine("--------------------------------------- 1ERE GENERATION --------------------------------");
+                log();
+                valideStar();
+                
+                population.NextGeneration();
+                Console.WriteLine("--------------------------------------- 2EME GENERATION --------------------------------");
+                log();
+            }
+            else
+            {
+                MessageBox.Show("Vous n'avez pas attribué de note à toutes les mélodies, impossible de passer à la génération suivante !");
+            }
+
+        }
+
+        public bool allIsRated()
+        {
+            Rating rate;
+
+            var stackPanels = canvas.Children.OfType<StackPanel>().ToList();
+            foreach (var stackPanel in stackPanels)
+            {
+                rate = (Rating)stackPanel.Children[0];
+
+
+                if (rate.Value == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        public void valideStar()
+        {
+            Rating rate;
+            int index;
+            var stackPanels = canvas.Children.OfType<StackPanel>().ToList();
+            foreach (var stackPanel in stackPanels)
+            {
+                rate = (Rating)stackPanel.Children[0];
+                index = int.Parse(rate.Tag.ToString()) - 1;
+
+                population.Individus[index].Note = rate.Value;
+
+                rate.Value = 0;
+                
+                //rate.StarOffColor = "#FFFFFFFF";
+                //rate.StarOnColor = ;
+            }
+        }
+
+        public void log()
+        {
+
+            Individu individu;
+            Console.WriteLine("------ Génération du log ------");
+
+            for (int i = 0; i <= population.Individus.Count - 1; i++ )
+            {
+                individu = population.Individus[i];
+                Console.WriteLine("----------- Individu " + i + " : " + individu.SongNumber + " ------------");
+                Console.WriteLine("Instrument :" + individu.Instrument);
+                Console.WriteLine("Gènes : ");
+                foreach(Note note in individu.Genes)
+                    Console.Write(note.Valeur + " ");
+
+                Console.WriteLine(" ");
+            }
+
+
         }
     }
 }
