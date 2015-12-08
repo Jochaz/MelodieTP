@@ -9,9 +9,9 @@ namespace GenerateurMusique
     class Note
     {
 
-        private int id;
+        private int valeur;
 
-        private int duration;
+        private int duration = 16;
 
         public int Duration
         {
@@ -19,16 +19,15 @@ namespace GenerateurMusique
             set { duration = value; }
         }
 
-        public int Id
+        public int Valeur
         {
-            get { return id; }
-            set { id = value; }
+            get { return valeur; }
+            set { valeur = value; }
         }
 
-        public Note(int number, int durat)
+        public Note(int number)
         {
-            duration = durat;
-            id = number;
+            valeur = number;
         }
     }
 }
