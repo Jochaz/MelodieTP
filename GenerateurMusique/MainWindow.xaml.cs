@@ -156,75 +156,16 @@ namespace GenerateurMusique
             mplayer.Play();
         }
 
-        private void BtnSong1_Click(object sender, RoutedEventArgs e)
+        private void OnClickButton(object sender, RoutedEventArgs e)
         {
-            CreateAndPlayMusic(0);
+            var button = (Button) sender;
+            var songNumber = int.Parse(button.Tag.ToString());
+            CreateAndPlayMusic(songNumber);
         }
-
-        private void BtnSong2_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(1);
-        }
-
-        private void BtnSong3_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(2);
-        }
-
-        private void BtnSong4_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(3);
-        }
-
-        private void BtnSong5_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(4);
-        }
-
-        private void BtnSong6_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(5);
-        }
-
-        private void BtnSong7_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(6);
-        }
-
-        private void BtnSong8_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(7);
-        }
-
-        private void BtnSong9_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(8);
-        }
-
-        private void BtnSong10_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(9);
-        }
-
-        private void BtnSong11_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(10);
-        }
-
-        private void BtnSong12_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(11);
-        }
-
-        private void BtnSong13_Click(object sender, RoutedEventArgs e)
-        {
-            CreateAndPlayMusic(12);
-        }
-
 
         private void rtFive_RatingChanged(object sender, RatingChangedEventArgs e)
         {
-            Rating r = (Rating)sender;
+            var r = (Rating)sender;
         }
     }
 }
