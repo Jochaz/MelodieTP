@@ -23,3 +23,17 @@ O:\Baptiste\Bureau\CoursI4A\ia\GenerateurMusique\GenerateurMusique\obj\Debug\Gen
 O:\Baptiste\Bureau\CoursI4A\ia\GenerateurMusique\GenerateurMusique\obj\Debug\GenerateurMusique.g.resources
 O:\Baptiste\Bureau\CoursI4A\ia\GenerateurMusique\GenerateurMusique\obj\Debug\GenerateurMusique.Properties.Resources.resources
 O:\Baptiste\Bureau\CoursI4A\ia\GenerateurMusique\GenerateurMusique\obj\Debug\GenerateurMusique.csproj.GenerateResource.Cache
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\MainWindow.baml
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\MainWindow.g.cs
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\App.g.cs
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique_MarkupCompile.cache
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique.g.resources
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique.Properties.Resources.resources
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique.csproj.GenerateResource.Cache
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\bin\Debug\GenerateurMusique.exe.config
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\bin\Debug\GenerateurMusique.exe
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\bin\Debug\GenerateurMusique.pdb
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\bin\Debug\MasaSam.Controls.dll
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique.exe
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique.pdb
+O:\Baptiste\Bureau\CoursI4A\ia\MelodieTP\GenerateurMusique\obj\Debug\GenerateurMusique.csprojResolveAssemblyReference.cache
