@@ -37,7 +37,7 @@ namespace GenerateurMusique
             isPlaying = false;
 
             population = new Population();
-
+            LblNumGeneration.Content = population.NbGeneration;
             // On s'abonne à la fermeture du programme pour pouvoir nettoyer le répertoire et les fichiers midi
             this.Closed += MainWindow_Closed;
         }
@@ -70,11 +70,14 @@ namespace GenerateurMusique
         // Clic sur le bouton : on reset la population
         private void BtnRestart(object sender, System.Windows.RoutedEventArgs e)
         {
+
+            LstAverage.Items.Clear();
             mplayer.Stop();
             mplayer.Close();
             isPlaying = false;
 
             population = new Population();
+            LblNumGeneration.Content = population.NbGeneration;
         }
 
         // Méthode principale
@@ -158,13 +161,15 @@ namespace GenerateurMusique
             isPlaying = false;
             if (allIsRated())
             {
-                Console.WriteLine("--------------------------------------- 1ERE GENERATION --------------------------------");
-                log();
+                //log();
                 valideStar();
-                
+                population.saveGenAverage();
+                LstAverage.Items.Add("Génération " + (population.NbGeneration - 1) + " : " + population.Averages[population.Averages.Count - 1]);
+
                 population.NextGeneration();
-                Console.WriteLine("--------------------------------------- 2EME GENERATION --------------------------------");
-                log();
+
+
+                LblNumGeneration.Content = population.NbGeneration;
             }
             else
             {
@@ -228,6 +233,16 @@ namespace GenerateurMusique
                 Console.WriteLine(" ");
             }
 
+
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void LstAverage_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
     }
