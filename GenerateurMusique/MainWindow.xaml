@@ -8,7 +8,7 @@
         </Button>
         <StackPanel x:Name="stackP1" Orientation="Horizontal" Canvas.Left="21" Canvas.Top="53">
             <controls:Rating Minimum="0" Maximum="5" x:Name="rtFive1" Tag="1"/>
-        </StackPanel> 
+        </StackPanel>
         <StackPanel Orientation="Horizontal" Canvas.Left="133" Canvas.Top="53">
             <controls:Rating Minimum="0" Maximum="5" x:Name="rtFive2" Tag="2"/>
         </StackPanel>
@@ -59,6 +59,16 @@
         <Button x:Name="BtnSong12"  Content="12" Canvas.Left="118" Canvas.Top="135" Width="89" Height="43" Click="OnClickButton" Tag="11"/>
         <Button x:Name="BtnSong13"  Content="13" Canvas.Left="230" Canvas.Top="135" Width="89" Height="43" Click="OnClickButton" Tag="12"/>
         <Button Content="Génération suivante&#xD;&#xA;&#x9;&#x9;-------&gt;" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="673" Canvas.Top="219" FontSize="15" Height="55" Width="183" Click="BtnNextGen"/>
+        <Label Content="Génération n° :" Canvas.Left="631" Canvas.Top="22" Width="89"/>
+        <Label x:Name="LblNumGeneration" Content="0" Canvas.Left="735" Canvas.Top="22" Width="34"/>
+        <ListView x:Name="LstAverage" Height="125" Canvas.Left="631" Canvas.Top="70" Width="194" SelectionChanged="LstAverage_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Moyenne"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label Content="Moyenne anciennes générations" Canvas.Left="631" Canvas.Top="45" Width="194"/>
 
     </Canvas>
 </Window>
