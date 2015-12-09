@@ -228,7 +228,37 @@ namespace GenerateurMusique
                 Console.WriteLine(" ");
             }
 
+        }
 
+        public void eraseRating()
+        {
+            //Efface les rates dans les stackpanels
+            var stackPanels = canvas.Children.OfType<StackPanel>().ToList();
+            foreach (var stackPanel in stackPanels)
+            {
+                stackPanel.Children.Clear();
+            }
+        }
+
+
+        public void resetRating()
+        {
+            eraseRating();
+            int indexCurrentRating = 1;
+            //Reinitialise les notes
+            var stackPanels = canvas.Children.OfType<StackPanel>().ToList();
+            foreach (var stackPanel in stackPanels)
+            {
+                Rating currentRate = new Rating
+                {
+                    Maximum = 5,
+                    Minimum = 0,
+                    Tag = indexCurrentRating,
+                    Name = "rtFive" + indexCurrentRating.ToString()
+                };
+                stackPanel.Children.Add(currentRate);
+                indexCurrentRating++;
+            }
         }
     }
 }
