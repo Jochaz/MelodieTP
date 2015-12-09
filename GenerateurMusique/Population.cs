@@ -9,7 +9,7 @@ namespace GenerateurMusique
     class Population
     {
         static Random rand = new Random();
-        private int crossoverRate = 90;
+        private int crossoverRate = 70;
 
         public int CrossoverRate
         {
@@ -17,7 +17,7 @@ namespace GenerateurMusique
             set { crossoverRate = value; }
         }
 
-        private int mutationRate = 10;
+        private int mutationRate = 15;
 
         public int MutationRate
         {
@@ -35,12 +35,18 @@ namespace GenerateurMusique
 
         private int nbGeneration;
 
-        private List<int> average;
-
-        public List<int> Average
+        public int NbGeneration
         {
-            get { return average; }
-            set { average = value; }
+            get { return nbGeneration; }
+            set { nbGeneration = value; }
+        }
+
+        private List<double> averages;
+
+        public List<double> Averages
+        {
+            get { return averages; }
+            set { averages = value; }
         }
 
         public Population()
@@ -145,7 +151,8 @@ namespace GenerateurMusique
         public void InitPopulation()
         {
             individus = new List<Individu>();
-
+            averages = new List<double>();
+            averages.Clear();
 
             // création de la population de base
             for (int i = 0; i < 13; i++)
@@ -155,6 +162,19 @@ namespace GenerateurMusique
                 individu.SongNumber = i + 1;
                 individus.Add(individu);
             }
+        }
+
+        public void saveGenAverage(){
+            int total = 0;
+            double average;
+            foreach (Individu individu in individus)
+            {
+                total += individu.Note;
+            }
+
+            average = (double)total / individus.Count;
+            Console.WriteLine(total / individus.Count);
+            averages.Add(average);
         }
         // cette méthode va renvoyer l'individu ayant la meilleure note parmis une liste d'individus
         // si plusieurs individus sont les meilleurs (même note), alors nous allons en renvoyer un aléatoirement parmi eux
