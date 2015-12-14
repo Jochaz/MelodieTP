@@ -8,10 +8,25 @@ namespace GenerateurMusique
 {
     class Note
     {
+        static Random rand = new Random();
+        private int maxValue = 88; //88
+
+        public int MaxValue
+        {
+            get { return maxValue; }
+            set { maxValue = value; }
+        }
+        private int minValue = 39; //39
+
+        public int MinValue
+        {
+            get { return minValue; }
+            set { minValue = value; }
+        }
 
         private int valeur;
 
-        private int duration = 16;
+        private int duration;
 
         public int Duration
         {
@@ -25,9 +40,10 @@ namespace GenerateurMusique
             set { valeur = value; }
         }
 
-        public Note(int number)
+        public Note()
         {
-            valeur = number;
+            valeur = rand.Next(minValue, maxValue);
+            duration = rand.Next(14, 18);
         }
     }
 }

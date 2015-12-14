@@ -4,27 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace GenerateurMusique
 {
     class Individu
     {
         static Random rand = new Random();
         private int instrument;
-
-        private int max = 95;
-
-        public int Max
-        {
-            get { return max; }
-            set { max = value; }
-        }
-        private int min = 25;
-
-        public int Min
-        {
-            get { return min; }
-            set { min = value; }
-        }
 
         private int songNumber;
 
@@ -34,7 +20,7 @@ namespace GenerateurMusique
             set { songNumber = value; }
         }
 
-        private int tempo = 150;
+        private int tempo;
 
         private int note = 0;
 
@@ -75,11 +61,11 @@ namespace GenerateurMusique
             {
                 //----------- création SANS parent  ----------------
                 instrument = rand.Next(1, 128);
-
-                // création des notes (16)
-                for (int a = 0; a < 16; a++)
+                tempo = rand.Next(130, 170);
+                // création des gènes : notes (16)
+                for (int a = 0; a <= 15; a++)
                 {
-                    Note note = new Note(rand.Next(min, max));
+                    Note note = new Note();
                     Genes.Add(note);
                 }
             }
@@ -90,25 +76,29 @@ namespace GenerateurMusique
             if (parents.Count == 1)
             {
                 instrument = parents[0].instrument;
+                tempo = parents[0].tempo;
                 genes = parents[0].genes;
+                Console.WriteLine("Crossover 1 seul parent");
             }
             else
             {
+                Console.WriteLine("Crossover 2 parents");
+                instrument = parents[rand.Next(0, 1)].instrument;
+                tempo = parents[rand.Next(0, 1)].tempo;
 
                 int pointCoupure;
-                // on détermine l'instrument
-                instrument = parents[rand.Next(0, 1)].instrument;
-
-                // on détermine le point de coupure des gènes (notes)
-                pointCoupure = rand.Next(0, 15);
+                pointCoupure = rand.Next(1, 14);
 
                 // on affecte les nouvelles notes en fonction du point de coupure
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i <= 15; i++)
                 {
                     if (i < pointCoupure)
                         genes.Add(parents[0].Genes[i]);
                     else
                         genes.Add(parents[1].Genes[i]);
+
+                    // on modifie la durée du dernier gène ajouté
+                    genes[genes.Count - 1].Duration = parents[rand.Next(0,1)].Genes[i].Duration;
                 }
             }
         }
@@ -124,23 +114,43 @@ namespace GenerateurMusique
             if (value < tauxMutation)
             {
                 instrument = rand.Next(1, 128);
+                Console.WriteLine("mutation");
             }
             
 
             // ----- mutation des gènes (notes) ----- //
             Note note;
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i <= 15; i++)
             {
+                note = genes[i];
+
+                // --- mutation de la valeur de la note --- //
                 value = rand.Next(0, 100);
                 if (value < tauxMutation)
                 {
-                    note = genes[i];
-                    // on fait muter la valeur du gène d'une "amplitude" raisonnable comprise entre -10 et 10, pour éviter de trop grosses différences
+
                     note.Valeur += rand.Next(-10, 10);
-                    // on vérifie que notre nouvelle valeur ne dépasse pas les min et max définit, si c'est le cas on applique le min et le max définit
-                    note.Valeur = (note.Valeur > max ? max :
-                                                                (note.Valeur < min ? min : note.Valeur));
+                    note.Valeur = (note.Valeur > note.MaxValue ? note.MaxValue :
+                                                                (note.Valeur < note.MinValue ? note.MinValue : note.Valeur));
+                    Console.WriteLine("mutation");
                 }
+
+                // --- mutation de la durée d'une note (longueur) --- //
+                value = rand.Next(0, 100);
+                if (value < tauxMutation)
+                {
+                    note.Duration = rand.Next(13, 19);
+                    Console.WriteLine("mutation");
+                }
+            }
+
+            // ----- Mutation du tempo ----- //
+            
+            value = rand.Next(0,100);
+            if (value < tauxMutation)
+            {
+                tempo = rand.Next(130, 170);
+                Console.WriteLine("mutation");
             }
         }
 
@@ -148,7 +158,6 @@ namespace GenerateurMusique
         {
 
         }
-
 
     }
 }

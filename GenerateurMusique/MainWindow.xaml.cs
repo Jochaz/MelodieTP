@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MasaSam.Controls;
+//using System.Windows.Forms;
 
 
 namespace GenerateurMusique
@@ -53,9 +54,7 @@ namespace GenerateurMusique
             }
             var files = Directory.EnumerateFiles("./", "Fichier*.mid");
             foreach (string file in files)
-            {
                 File.Delete(file);
-            }
 
         }
 
@@ -72,6 +71,7 @@ namespace GenerateurMusique
         {
 
             LstAverage.Items.Clear();
+            resetRating();
             mplayer.Stop();
             mplayer.Close();
             isPlaying = false;
@@ -106,19 +106,8 @@ namespace GenerateurMusique
             song.SetChannelInstrument(0, 0, individu.Instrument);
 
             // c. Ajouter des notes
-            // Chaque note est comprise entre 0 et 127 (12 correspond au type de note, fixe ici à des 1/4)
-            // L'équivalence avec les notes / octaves est disponible ici : https://andymurkin.files.wordpress.com/2012/01/midi-int-midi-note-no-chart.jpg
-            // Ici 16 notes aléatoire entre 16 et 96 (pour éviter certaines notes trop aigues ou trop graves)
-            //for (int i = 0; i < 16; i++)
-            //{
-            //    int note = rand.Next(24, 96);
-            //    song.AddNote(0, 0, note, 24);
-            //}
-
             foreach(Note note in individu.Genes)
-            {
                 song.AddNote(0, 0, note.Valeur, note.Duration);
-            }
 
             // d. Enregistrer le fichier .mid (lisible dans un lecteur externe par exemple)
             // on prépare le flux de sortie
@@ -128,9 +117,8 @@ namespace GenerateurMusique
             byte[] src = ms.GetBuffer();
             byte[] dst = new byte[src.Length];
             for (int i = 0; i < src.Length; i++)
-            {
                 dst[i] = src[i];
-            }
+
             ms.Close();
             // et on écrit le fichier
             strFileName = "Fichier" + nbFile + ".mid";
@@ -164,17 +152,15 @@ namespace GenerateurMusique
                 //log();
                 valideStar();
                 population.saveGenAverage();
-                LstAverage.Items.Add("Génération " + (population.NbGeneration - 1) + " : " + population.Averages[population.Averages.Count - 1]);
+                LstAverage.Items.Add((population.NbGeneration) + "                 " + Math.Round(population.Averages[population.Averages.Count - 1],2));
 
                 population.NextGeneration();
 
-
                 LblNumGeneration.Content = population.NbGeneration;
+                resetRating();
             }
             else
-            {
                 MessageBox.Show("Vous n'avez pas attribué de note à toutes les mélodies, impossible de passer à la génération suivante !");
-            }
 
         }
 
@@ -186,12 +172,8 @@ namespace GenerateurMusique
             foreach (var stackPanel in stackPanels)
             {
                 rate = (Rating)stackPanel.Children[0];
-
-
                 if (rate.Value == 0)
-                {
                     return false;
-                }
             }
 
             return true;
@@ -205,13 +187,7 @@ namespace GenerateurMusique
             {
                 rate = (Rating)stackPanel.Children[0];
                 index = int.Parse(rate.Tag.ToString()) - 1;
-
                 population.Individus[index].Note = rate.Value;
-
-                rate.Value = 0;
-                
-                //rate.StarOffColor = "#FFFFFFFF";
-                //rate.StarOnColor = ;
             }
         }
 
@@ -233,17 +209,35 @@ namespace GenerateurMusique
                 Console.WriteLine(" ");
             }
 
-
         }
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void eraseRating()
         {
-
+            //Efface les rates dans les stackpanels
+            var stackPanels = canvas.Children.OfType<StackPanel>().ToList();
+            foreach (var stackPanel in stackPanels)
+                stackPanel.Children.Clear();
         }
 
-        private void LstAverage_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
+        public void resetRating()
+        {
+            eraseRating();
+            int indexCurrentRating = 1;
+            //Reinitialise les notes
+            var stackPanels = canvas.Children.OfType<StackPanel>().ToList();
+            foreach (var stackPanel in stackPanels)
+            {
+                Rating currentRate = new Rating
+                {
+                    Maximum = 5,
+                    Minimum = 0,
+                    Tag = indexCurrentRating,
+                    Name = "rtFive" + indexCurrentRating.ToString()
+                };
+                stackPanel.Children.Add(currentRate);
+                indexCurrentRating++;
+            }
         }
     }
 }
