@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MasaSam.Controls;
+using Microsoft.VisualBasic;
 //using System.Windows.Forms;
 
 
@@ -41,6 +42,12 @@ namespace GenerateurMusique
             LblNumGeneration.Content = population.NbGeneration;
             // On s'abonne à la fermeture du programme pour pouvoir nettoyer le répertoire et les fichiers midi
             this.Closed += MainWindow_Closed;
+
+            for (int i = 1; i <= 12; i++)
+            {
+                CboRecord.Items.Add(i.ToString());
+            }
+            CboRecord.SelectedIndex = 0;
         }
         // On efface les fichiers .mid que l'on avait créé à la fin du programme
         void MainWindow_Closed(object sender, EventArgs e)
@@ -81,7 +88,7 @@ namespace GenerateurMusique
         }
 
         // Méthode principale
-        void CreateAndPlayMusic(int songNumber) 
+        void CreateAndPlayMusic(int songNumber, bool onlyRecord) 
         {
             // s'il y a un fichier en cours de lecture on l'arrête 
             if (isPlaying)
@@ -121,25 +128,34 @@ namespace GenerateurMusique
 
             ms.Close();
             // et on écrit le fichier
-            strFileName = "Fichier" + nbFile + ".mid";
-            FileStream objWriter = File.Create(strFileName);
-            objWriter.Write(dst, 0, dst.Length);
-            objWriter.Close();
-            objWriter.Dispose();
-            objWriter = null;
-
-            // 2) Jouer un fichier MIDI
-            mplayer.Open(new Uri(strFileName, UriKind.Relative));
-            nbFile++;
-            isPlaying = true;
-            mplayer.Play();
+            try
+            {
+                strFileName = "Fichier" + nbFile + ".mid";
+                FileStream objWriter = File.Create(strFileName);
+                objWriter.Write(dst, 0, dst.Length);
+                objWriter.Close();
+                objWriter.Dispose();
+                objWriter = null;
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show("Veuillez fermer la mélodie qui est en cours de lecture", "Erreur", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            if (!onlyRecord) { 
+                // 2) Jouer un fichier MIDI
+                mplayer.Open(new Uri(strFileName, UriKind.Relative));
+                nbFile++;
+                isPlaying = true;
+                mplayer.Play();
+            }
         }
 
         private void OnClickButton(object sender, RoutedEventArgs e)
         {
             var button = (Button) sender;
             var songNumber = int.Parse(button.Tag.ToString());
-            CreateAndPlayMusic(songNumber);
+            CreateAndPlayMusic(songNumber, false);
         }
 
         private void BtnNextGen(object sender, RoutedEventArgs e)
@@ -239,5 +255,11 @@ namespace GenerateurMusique
                 indexCurrentRating++;
             }
         }
+
+        private void btnRecord_Click(object sender, RoutedEventArgs e)
+        {
+            CreateAndPlayMusic(int.Parse(CboRecord.SelectedValue.ToString()), true);
+        }
+
     }
 }

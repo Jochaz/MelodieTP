@@ -59,5 +59,7 @@
         <Label x:Name="LblNumGeneration" Content="0" Canvas.Left="378" Canvas.Top="52" Width="88" FontSize="20"/>
         <Label Content="Moyenne anciennes générations" Canvas.Left="650" Canvas.Top="129" Width="194" FontWeight="Bold"/>
         <ListBox x:Name="LstAverage" Height="177" Canvas.Left="654" Canvas.Top="155" Width="184"/>
+        <Button x:Name="btnRecord" Content="Enregistrer une mélodie" Canvas.Left="267" Canvas.Top="420" Width="150" Height="55" Click="btnRecord_Click" />
+        <ComboBox x:Name="CboRecord" Canvas.Left="445" Canvas.Top="434" Width="47" IsReadOnly="True"/>
     </Canvas>
 </Window>
